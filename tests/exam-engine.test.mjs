@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+import {DatabaseSync} from 'node:sqlite';
+function moduleAt(path,dependencies={}){const testModule={exports:{}};const js=ts.transpileModule(readFileSync(new URL('../'+path,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;vm.runInNewContext(js,{module:testModule,exports:testModule.exports,require:n=>{if(n in dependencies)return dependencies[n];throw Error('Unmocked module '+n);},console,Response,Request,URL,Date,crypto,AbortSignal});return testModule.exports;}
+const engine=moduleAt('lib/exam-engine.ts');
+const {roleIds,blueprint,buildExam,grade,eligible,pickQuestions,validateDraft}=engine;
+const bank=[];
+for(const role of roleIds)for(const s of blueprint(role))for(let i=0;i<s.count*4;i++)bank.push({id:`${role}-${s.subject}-${i}`,family:`${role}-${s.subject}-${i}`,role,level:'AMBOS',subject:s.subject,topic:'teste',syllabusItem:'1',prompt:`Item ${i}`,options:['correta','errada1','errada2','errada3'],answer:0,explanation:'teste',source:'fixture',use:'prova'});
+test('2500 complete exams preserve order, weights, answer keys and unique families',()=>{for(const role of roleIds)for(let run=0;run<500;run++){const {questions}=buildExam(bank,role);const expected=blueprint(role).flatMap(s=>Array(s.count).fill(s.subject));assert.equal(JSON.stringify(questions.map(q=>q.subject)),JSON.stringify(expected));assert.equal(new Set(questions.map(q=>q.family)).size,questions.length);for(const q of questions)assert.equal(q.options[q.answer],'correta');assert.equal(grade(questions,Object.fromEntries(questions.map(q=>[q.id,q.answer])),role).points,100);}});
+test('unseen items are never discarded when fewer than the requested count remain',()=>{const pool=eligible(bank,'ti','PORTUGUES').slice(0,12);for(let i=0;i<500;i++){const chosen=pickQuestions(pool,10,pool.slice(0,10).map(q=>q.family));assert.ok(chosen.some(q=>q.id===pool[10].id));assert.ok(chosen.some(q=>q.id===pool[11].id));}});
+test('three complete attempts remain disjoint with sufficient family inventory',()=>{for(const role of roleIds){const history=[];for(let i=0;i<3;i++){const result=buildExam(bank,role,history);assert.equal(result.repeated,0);history.push(...result.questions.map(q=>q.family));}}});
+test('semantic variants cannot occupy two positions in the same exam',()=>{const base=eligible(bank,'ti','PORTUGUES').slice(0,10);const pool=[...base,...base.map(q=>({...q,id:q.id+'copy'}))];const picked=pickQuestions(pool,10,[]);assert.equal(new Set(picked.map(q=>q.family)).size,10);assert.throws(()=>pickQuestions(pool,11,[]));});
+test('50 points is not 50 percent correct',()=>{const {questions}=buildExam(bank,'ti');const specific=questions.filter(q=>q.subject==='ESPECIFICOS').slice(0,17);const result=grade(questions,Object.fromEntries(specific.map(q=>[q.id,q.answer])),'ti');assert.equal(result.points,51);assert.equal(result.correct,17);assert.equal(result.minimumReached,true);});
+test('unknown answers, invalid alternatives and more than thirty essay lines are rejected',()=>{assert.throws(()=>validateDraft({answers:{other:0},marked:[],essay:''},new Set(['known'])));assert.throws(()=>validateDraft({answers:{known:4},marked:[],essay:''},new Set(['known'])));assert.throws(()=>validateDraft({answers:{},marked:[],essay:Array(31).fill('linha').join('\n')},new Set()));});
+test('authenticated workflow persists drafts, isolates users, rejects stale writes and enforces deadline',async()=>{
+ const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../drizzle/0000_premium_fallen_one.sql',import.meta.url),'utf8'));
+ const DB={prepare(sql){return{bind(...args){const statement=sqlite.prepare(sql);return{async run(){const result=statement.run(...args);return{meta:{changes:Number(result.changes)}};},async first(){return statement.get(...args)||null;},async all(){return{results:statement.all(...args)};}};}};}};
+ const store=moduleAt('lib/attempt-store.ts',{'cloudflare:workers':{env:{DB}},'./exam-engine':engine});let user={email:'alice@example.test',displayName:'Alice'};
+ const route=moduleAt('app/api/study/route.ts',{'@/app/chatgpt-auth':{getChatGPTUser:async()=>user},'@/lib/attempt-store':store,'@/lib/exam-engine':engine,'@/lib/question-bank':{loadQuestionBank:async()=>bank}});
+ const request=body=>new Request('https://example.test/api/study',{method:'POST',headers:{origin:'https://example.test','content-type':'application/json'},body:JSON.stringify(body)});
+ let response=await route.POST(request({action:'start',role:'ti'}));assert.equal(response.status,200);let a=(await response.json()).attempt;assert.equal(a.questions.length,40);assert.equal(a.deadline-a.created,14400000);assert.equal(a.questions[0].answer,undefined);assert.equal(a.questions[0].explanation,undefined);
+ const id=a.id;const qid=a.questions[0].id;response=await route.POST(request({action:'save',id,revision:0,answers:{[qid]:2},marked:[qid],essay:''}));assert.equal(response.status,200);a=(await response.json()).attempt;assert.equal(a.revision,1);
+ let snapshot=await (await route.GET(new Request('https://example.test/api/study'))).json();assert.equal(snapshot.active.answers[qid],2);assert.equal(snapshot.active.marked[0],qid);assert.equal(snapshot.active.deadline,a.deadline);
+ response=await route.POST(request({action:'save',id,revision:0,answers:{},marked:[],essay:''}));assert.equal(response.status,409);
+ const resumed=await (await route.POST(request({action:'start',role:'social'}))).json();assert.equal(resumed.attempt.id,id);
+ user={email:'bob@example.test',displayName:'Bob'};response=await route.GET(new Request('https://example.test/api/study?id='+id));assert.equal(response.status,404);snapshot=await (await route.GET(new Request('https://example.test/api/study'))).json();assert.equal(snapshot.history.length,0);assert.equal(snapshot.active,null);
+ response=await route.POST(request({action:'save',id,revision:1,answers:{},marked:[],essay:''}));assert.equal(response.status,404);
+ user={email:'alice@example.test',displayName:'Alice'};sqlite.prepare('UPDATE exam_attempts SET deadline=? WHERE id=?').run(Date.now()-1,id);
+ response=await route.POST(request({action:'save',id,revision:1,answers:{[qid]:0},marked:[],essay:''}));a=(await response.json()).attempt;assert.equal(a.status,'completed');assert.equal(a.answers[qid],2);assert.ok(Number.isInteger(a.questions[0].answer));assert.equal(a.result.total,40);
+ snapshot=await (await route.GET(new Request('https://example.test/api/study'))).json();assert.equal(snapshot.active,null);assert.equal(snapshot.history.length,1);
+ user=null;response=await route.POST(request({action:'start',role:'ti'}));assert.equal(response.status,401);
+ response=await route.POST(new Request('https://example.test/api/study',{method:'POST',headers:{origin:'https://evil.test'},body:'{}'}));assert.equal(response.status,403);sqlite.close();
+});

@@ -1,0 +1,151 @@
+{
+  "common": {
+    "MEDIO": {
+      "PORTUGUES": [
+        "1. Características e funcionalidades de gêneros textuais variados.",
+        "2. Compreensão e interpretação de textos.",
+        "3. Variação linguística: estilística, sociocultural, geográfica, histórica.",
+        "4. Mecanismos de produção de sentidos nos textos: polissemia, ironia, comparação, ambiguidade, citação, inferência, pressuposto.",
+        "5. Mecanismos de coesão e coerência.",
+        "6. Sequências textuais: descritiva, narrativa, argumentativa, injuntiva e expositiva.",
+        "7. Tipos de argumento.",
+        "8. Classificação gramatical.",
+        "9. Gramática normativa.",
+        "10. Processo de formação de palavras.",
+        "11. Fenômenos gramaticais básicos.",
+        "12. Relações de coordenação e subordinação entre orações e entre termos da oração.",
+        "13. Concordância e regência verbal e nominal.",
+        "14. Pontuação e acentuação.",
+        "15. Ortografia oficial."
+      ],
+      "RLM": [
+        "1. Resolução de problemas envolvendo raciocínio lógico: problemas envolvendo dedução, estruturas lógicas, argumentação, verdadeiro e falso e problemas com diagramas lógicos.",
+        "2. Sequências e padrões: sequências lógicas e numéricas, progressões aritméticas simples e identificação de padrões lógicos e numéricos.",
+        "3. Proporcionalidade e relações entre grandezas diretamente e inversamente proporcionais.",
+        "4. Regra de três simples e composta.",
+        "5. Porcentagem: aumentos, descontos e variações percentuais.",
+        "6. Matemática financeira básica: juros simples, cálculo de capital, taxa, tempo e montante.",
+        "7. Análise de dados: leitura e interpretação de tabelas, gráficos (barras, colunas e setores) e média aritmética simples.",
+        "8. Lógica proposicional: proposições, conectivos lógicos, tabelas-verdade, equivalências lógicas simples e negação de proposições."
+      ],
+      "GOIAS": [
+        "1. Conflitos sociais, pobreza, fome e direitos humanos.",
+        "2. Emergências de saúde, surtos e epidemias.",
+        "3. Questões atuais do meio ambiente, desastres ambientais, mudanças climáticas e políticas ambientais.",
+        "4. Arte, cultura e patrimônio na região Centro-Oeste brasileira.",
+        "5. Formação histórico-territorial de Goiás e São Miguel do Araguaia-GO.",
+        "6. Política, economia e sociedade em Goiás: da Colônia à República.",
+        "7. Modernização da agricultura e urbanização do território de Goiás.",
+        "8. Aspectos físicos do território goiano: vegetação, hidrografia, clima e relevo.",
+        "9. Natureza, cultura e turismo em Goiás.",
+        "10. Aspectos histórico-geográficos de São Miguel do Araguaia-GO."
+      ]
+    },
+    "SUPERIOR": {
+      "PORTUGUES": [
+        "1. Características e funcionalidades de diferentes gêneros e tipologias textuais.",
+        "2. Interpretação textual de diferentes gêneros e tipologias textuais.",
+        "3. Mecanismos de produção de sentidos nos textos: polissemia, ambiguidade, citação, inferência e pressuposto.",
+        "4. Organização do texto e fatores de textualidade (coesão, coerência, intertextualidade, informatividade, intencionalidade, aceitabilidade, situacionalidade).",
+        "5. Progressão temática em textos.",
+        "6. Tipologias textuais: descritiva, narrativa, argumentativa, injuntiva, dialogal.",
+        "7. Elementos de sequenciação textual: referenciação, substituição, repetição, conectores e outros elementos.",
+        "8. Tipos de argumento.",
+        "9. Figuras de linguagem.",
+        "10. Fenômenos linguísticos.",
+        "11. Gramática normativa.",
+        "12. Classificação gramatical.",
+        "13. Morfologia.",
+        "14. Análise morfossintática.",
+        "15. Concordância verbal e nominal.",
+        "16. Regência verbal e nominal.",
+        "17. Colocação pronominal.",
+        "18. Pontuação.",
+        "19. Ortografia oficial."
+      ],
+      "RLM": [
+        "1. Estruturas lógicas: proposições, conectivos e proposições simples e compostas.",
+        "2. Tabelas-verdade.",
+        "3. Tautologia, contradição e contingência.",
+        "4. Equivalências lógicas.",
+        "5. Negações de proposições e Leis de De Morgan.",
+        "6. Lógica de argumentação: argumentos, validade e noções de falácias.",
+        "7. Conjuntos numéricos e subconjuntos.",
+        "8. Operações com conjuntos: união, interseção e diferença.",
+        "9. Sequências lógicas, padrões e regularidades.",
+        "10. Problemas de raciocínio lógico envolvendo análise de situações e interpretação de informações.",
+        "11. Razão, proporção e grandezas proporcionais.",
+        "12. Regra de três simples e composta.",
+        "13. Porcentagem e variação percentual.",
+        "14. Juros simples e juros compostos.",
+        "15. Noções de Estatística: leitura e interpretação de tabelas e gráficos.",
+        "16. Medidas de tendência central: média aritmética, média ponderada, moda e mediana."
+      ],
+      "GOIAS": [
+        "1. Conflitos sociais, desigualdades socioeconômicas, segurança alimentar e sistemas nacionais e internacionais de proteção aos direitos humanos.",
+        "2. Emergências em saúde pública: fundamentos de epidemiologia, gestão de crises sanitárias, políticas públicas de saúde e organização do Sistema Único de Saúde (SUS).",
+        "3. Meio ambiente e sustentabilidade: mudanças climáticas, desastres socioambientais, instrumentos de gestão e políticas ambientais no Brasil.",
+        "4. Arte, cultura e patrimônio no Centro-Oeste brasileiro: processos históricos de formação cultural, identidade regional e políticas de preservação.",
+        "5. Formação histórico-territorial de Goiás e de São Miguel do Araguaia-GO: ocupação, territorialização, dinâmicas econômicas e transformações socioespaciais.",
+        "6. Política, economia e sociedade em Goiás: processos históricos da Colônia à República, modernização econômica e reconfigurações sociais.",
+        "7. Estrutura político-administrativa do Estado de Goiás: organização dos Poderes, competências constitucionais, federalismo e gestão pública estadual.",
+        "8. Modernização da agricultura, agronegócio e urbanização em Goiás: impactos socioeconômicos e reestruturação do espaço regional.",
+        "9. Aspectos físicos do território goiano: análise integrada de clima, relevo, hidrografia e vegetação na organização do espaço geográfico.",
+        "10. Natureza, cultura e turismo em Goiás: potencialidades econômicas, planejamento territorial e desenvolvimento regional.",
+        "11. Aspectos histórico-geográficos de São Miguel do Araguaia-GO: formação urbana, dinâmicas econômicas e inserção regional."
+      ]
+    }
+  },
+  "specific": {
+    "acs": [
+      "1. Legislação e políticas do Sistema Único de Saúde e normas profissionais: Constituição Federal de 1988 - Art. nº 196 a 200; Sistema Único de Saúde (Lei nº 8.080/1990); participação da comunidade e transferências intergovernamentais de recursos na área da saúde (Lei nº 8.142/1990); regulamentação das atividades do Agente Comunitário de Saúde (Lei nº 11.350/2006 e alterações posteriores); Política Nacional de Atenção Básica (PNAB), aplicada a atuação do cargo; ética no serviço público e sigilo profissional do Agente Comunitário de Saúde.",
+      "2. Fundamentos, princípios e diretrizes da Atenção Primária à Saúde; Estratégia Saúde da Família: objetivos, composição da equipe e atribuições; processo de trabalho das equipes de Atenção Básica; territorialização e adscrição de clientela; diagnóstico comunitário e planejamento local em saúde.",
+      "3. Noções básicas de epidemiologia; indicadores de saúde; vigilância epidemiológica, sanitária e ambiental; doenças e agravos de notificação compulsória.",
+      "4. Procedimentos gerais de notificação em saúde, Programa Nacional de Imunizações (PNI) e ações de imunização no âmbito da Atenção Primária.",
+      "5. Educação em saúde na comunidade; estratégias de mobilização social e participação comunitária e ações intersetoriais em saúde.",
+      "6. Atenção aos ciclos de vida e grupos prioritários: saúde da criança e do adolescente (direitos fundamentais à vida e à saúde previstos no Estatuto da Criança e do Adolescente); saúde da mulher; saúde do adulto; saúde da pessoa idosa (direitos previstos do Estatuto da Pessoa Idosa); grupos em situação de vulnerabilidade social.",
+      "7. Programas sociais e articulação com a rede de assistência social (CRAS).",
+      "8. Atuação profissional do Agente Comunitário de Saúde: visita domiciliar, cadastramento e atualização de cadastros, sistemas de informação, registro e monitoramento das ações em saúde, acolhimento, humanização, vínculo com a comunidade e trabalho em equipe multiprofissional.",
+      "9. Lei Orgânica do Município de São Miguel do Araguaia-GO (Lei nº 1, de 05 de abril de 1990 e suas alterações posteriores: Capítulo VII do Título III - Dos Servidores Municipais e Capítulo III do Título V - Da Saúde)."
+    ],
+    "ti": [
+      "1. Ética profissional, sigilo das informações e boas práticas no uso de recursos tecnológicos no serviço público; segurança da informação no setor público: princípios, políticas básicas, proteção de dados e responsabilidade do usuário; noções de legislação e boas práticas aplicadas à Tecnologia da Informação no setor público, com ênfase na Lei Geral de Proteção de Dados Pessoais – LGPD (Lei nº 13.709/2018), princípios de segurança da informação, uso responsável dos recursos tecnológicos, proteção de dados e privacidade, políticas de senhas, cópias de segurança, prevenção contra vírus e boas práticas de atendimento ao usuário.",
+      "2. Fundamentos de sistemas operacionais Microsoft Windows: instalação, configuração e administração do Windows 10, Windows 11 e Windows Server e Active Directory: criação e gerenciamento de usuários, grupos e permissões de acesso.",
+      "3. Redes de computadores: conceitos básicos, tipos de rede, cabeamento estruturado, dispositivos de rede e fundamentos do modelo OSI e do protocolo TCP/IP; internet e navegação segura: uso de navegadores, pesquisa de informações e proteção contra phishing e malware.",
+      "4. Computação em nuvem: conceitos gerais e uso de serviços como Google Workspace, Microsoft 365 e AWS.",
+      "5. Hardware: componentes internos, montagem, manutenção preventiva e identificação de falhas; impressoras e periféricos: instalação, configuração e resolução de problemas.",
+      "6. Software: instalação, configuração, atualização e remoção de programas; automação de tarefas administrativas com scripts básicos em PowerShell ou CMD; Pacote Office e ferramentas livres: edição de textos, planilhas e apresentações; armazenamento de dados: organização de arquivos, uso de HD, SSD e mídias externas.",
+      "7. Suporte técnico ao usuário: atendimento, orientação, registro e acompanhamento de chamados.",
+      "8. Lei Orgânica do Município de São Miguel do Araguaia-GO (Lei nº 1, de 05 de abril de 1990 e suas alterações posteriores: Capítulo VII do Título III - Dos Servidores Municipais)."
+    ],
+    "social": [
+      "1. Ética profissional do Assistente Social e sigilo profissional conforme o Código de Ética do Assistente Social (Lei nº 8.662/1993 e resoluções do CFESS); fundamentos históricos, teóricos e metodológicos do Serviço Social no Brasil; concepções de proteção social e experiências históricas no campo da assistência social.",
+      "2. Sistema Único de Assistência Social – SUAS e Política Nacional de Assistência Social (Lei nº 8.742/1993 – LOAS e suas alterações); Política de Seguridade Social Brasileira conforme a Constituição Federal de 1988 (art. 194); Norma Operacional Básica do Sistema Único de Assistência Social (NOB SUAS) - Versão vigente; gestão de benefícios, serviços e programas socioassistenciais no âmbito municipal.",
+      "3. Direitos da criança e do adolescente e políticas de atendimento conforme o Estatuto da Criança e do Adolescente (Lei nº 8.069/1990); Política Nacional do Idoso e competências dos órgãos públicos (Lei nº 8.842/1994 e Lei nº 10.741/2003, com suas alterações); Política Nacional para a Pessoa com Deficiência e direitos sociais (Lei nº 13.146/2015 e Decreto nº 3.298/1999); assistência à mulher em situação de violência doméstica e familiar conforme a Lei Maria da Penha (Lei nº 11.340/2006).",
+      "4. Relação Estado e sociedade e seus impactos nas políticas públicas; políticas sociais públicas, direitos sociais e movimentos sociais no Brasil; transformações societárias, mudanças no Estado e reconfiguração das políticas sociais; diversidade, ações afirmativas e enfrentamento das desigualdades sociais; racismo, sexismo, capacitismo e demais formas de desigualdade e discriminação social; conservadorismo, neoconservadorismo e desafios às políticas sociais na atualidade.",
+      "5. Espaços sócio-ocupacionais e atribuições do Assistente Social na gestão pública municipal; planejamento social: elaboração de planos, programas, projetos e ações profissionais; instrumentos técnico-operativos do Serviço Social: estudo social, parecer, relatório e laudo social; avaliação e monitoramento de programas, projetos e políticas sociais; trabalho interdisciplinar e intersetorial na atuação do Assistente Social.",
+      "6. Lei Orgânica do Município de São Miguel do Araguaia-GO (Lei nº 1, de 05 de abril de 1990, e suas alterações posteriores) – Título V, Capítulo II (Da Previdência e da Assistência Social) e Capítulo IX (Da Criança, do Adolescente e do Idoso): dispositivos sobre políticas municipais de assistência social, proteção à família, à criança, ao adolescente, ao idoso e às pessoas em situação de vulnerabilidade social, bem como competências do Município na garantia de direitos sociais."
+    ],
+    "pedagogy": [
+      "1. Constituição Federal de 1988: princípios, fins e garantias do direito à educação; Lei de Diretrizes e Bases da Educação Nacional – LDB (Lei nº 9.394/1996 – Títulos IV e V); Estatuto da Criança e do Adolescente – ECA (Lei nº 8.069/1990); Plano Nacional de Educação – PNE: metas e diretrizes que orientam políticas públicas e o planejamento escolar; Base Nacional Comum Curricular – BNCC: etapas da Educação Infantil e do Ensino Fundamental.",
+      "2. Sociedade, cultura e educação; aprendizagem e desenvolvimento humano; abordagens teóricas do processo de ensino e aprendizagem.",
+      "3. Concepções de currículo e organização escolar: estrutura do currículo da educação básica, integração de áreas do conhecimento, objetivos, habilidades e competências; planejamento educacional, planos e projetos pedagógicos; Projeto Político-Pedagógico: metodologia de elaboração, implementação, acompanhamento e avaliação.",
+      "4. Educação inclusiva e educação das relações étnico-raciais e indígenas: princípios da inclusão escolar, garantia de acessibilidade, equidade, respeito à diversidade e valorização das diferenças no contexto educacional. Lei Brasileira de Inclusão da Pessoa com Deficiência (Lei nº 13.146/2015): atendimento educacional aos estudantes com deficiência e público-alvo da educação especial, adaptações curriculares, flexibilização de métodos e de avaliações para estudantes com deficiência e com transtornos do desenvolvimento.",
+      "5. Alfabetização e letramento na Educação Infantil e nos anos iniciais do Ensino Fundamental; avaliação da aprendizagem: concepções, instrumentos, critérios e práticas avaliativas; acompanhamento pedagógico dos estudantes e estratégias de intervenção.",
+      "6. Prática pedagógica e formação docente: desenvolvimento contínuo do professor, reflexão crítica sobre a prática, formação inicial e continuada; gestão de sala de aula, mediação de conflitos e construção de ambiente favorável à aprendizagem; formação continuada de professores e desenvolvimento profissional docente.",
+      "7. Tecnologias educacionais e recursos didáticos na prática pedagógica.",
+      "8. Lei Orgânica do Município de São Miguel do Araguaia-GO (Lei nº 1, de 05 de abril de 1990 e suas alterações posteriores: Capítulo VII do Título III - Dos Servidores Municipais e Capítulo IV do Título V - Da Educação, Da Cultura, Do Desporto e Lazer)."
+    ],
+    "psychology": [
+      "1. Ética profissional do psicólogo e bioética na saúde, conforme o Código de Ética Profissional do Psicólogo (Resolução CFP nº 010/2005); avaliação psicológica e psicodiagnóstico, fundamentos técnicos, científicos e éticos (Resolução CFP nº 031/2022); instrumentos de avaliação psicológica, critérios de escolha, aplicação, correção e interpretação de testes psicológicos e uso do Sistema de Avaliação de Testes Psicológicos – SATEPSI; elaboração de documentos psicológicos: laudos, relatórios, pareceres e registros técnicos (Resolução CFP nº 006/2019).",
+      "2. Psicologia da saúde e atuação do psicólogo no Sistema Único de Saúde – SUS (Lei nº 8.080/1990); psicologia e políticas públicas no Sistema Único de Assistência Social – SUAS (Lei nº 8.742/1993); atuação do psicólogo nos níveis de atenção à saúde: atenção primária, secundária e terciária (Política Nacional de Atenção Básica contida na Portaria de Consolidação GM/MS nº 2/2017).",
+      "3. Principais abordagens teóricas em Psicologia: psicanálise, cognitivo-comportamental, humanista-existencial, sistêmica e sócio-histórica; psicoterapia individual, grupal, familiar e comunitária em diferentes ciclos de vida.",
+      "4. Psicopatologia: transtornos mentais e comportamentais, critérios diagnósticos e manejo clínico segundo CID-11 e DSM-5-TR; avaliação e manejo do comportamento suicida, automutilação e autolesão (Lei nº 13.819/2019); dependência química, uso abusivo de álcool e outras drogas, estratégias de prevenção e redução de danos (Lei nº 11.343/2006).",
+      "5. Psicologia do envelhecimento, saúde mental da pessoa idosa e proteção de direitos (Lei nº 10.741/2003); violência doméstica, sexual e institucional, acolhimento psicológico e encaminhamentos à rede de proteção (Lei nº 11.340/2006; Lei nº 10.778/2003; Lei nº 8.069/1990).",
+      "6. Psicologia hospitalar: impactos da hospitalização, adesão ao tratamento, enfrentamento da doença, luto e terminalidade; doenças crônicas e agudas, estresse, dor, qualidade de vida e reabilitação psicossocial.",
+      "7. Intervenção psicológica em situações de crise, emergência e desastre; trabalho em equipe multiprofissional, interdisciplinar e intersetorial na rede pública; psicologia comunitária e intervenções em saúde coletiva; sexualidade, direitos sexuais e reprodutivos, prevenção das IST/HIV e aconselhamento psicológico.",
+      "8. Lei Orgânica do Município de São Miguel do Araguaia-GO (Lei nº 1, de 05 de abril de 1990 e suas alterações posteriores) – Título V, Capítulo III (Da Saúde): dispositivos sobre competência municipal na organização e execução dos serviços públicos de saúde, ações de promoção, prevenção e reabilitação da saúde, integração ao Sistema Único de Saúde – SUS e estruturação da rede municipal de atenção à saúde.",
+      "9. Lei Orgânica do Município de São Miguel do Araguaia-GO (Lei nº 1, de 05 de abril de 1990 e suas alterações posteriores: Capítulo VII do Título III - Dos Servidores Municipais e Capítulo III do Título V - Da Saúde)."
+    ]
+  }
+}

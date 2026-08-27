@@ -1,0 +1,8 @@
+.exam-meta span:first-child { font-size:0; }
+.exam-meta span:first-child::after { content:"modo edital · prova completa"; font-size:11px; }
+.section-wrap { width:100%; min-width:0; }
+.role-grid { min-width:0; }
+.role-card { min-width:0; }
+.role-card strong, .role-description { overflow-wrap:anywhere; }
+.section-heading { min-width:0; }
+.section-muted { white-space:nowrap; }
