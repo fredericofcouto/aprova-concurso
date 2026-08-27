@@ -99,7 +99,7 @@ Next.js/Vinext + React
 - `supabase/migrations/`: estrutura e políticas do banco de questões revisado.
 - `tests/`: testes do motor, banco, API, renderização e componentes.
 
-## Segurança e privacidade
+## Segurança, privacidade e controle de acesso
 
 - Tentativas e redações ficam vinculadas ao e-mail identificado pelo servidor.
 - Usuários não conseguem consultar tentativas de outras contas.
