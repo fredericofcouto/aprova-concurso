@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
 import {DatabaseSync} from 'node:sqlite';
-function moduleAt(path,dependencies={}){const testModule={exports:{}};const js=ts.transpileModule(readFileSync(new URL('../'+path,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;vm.runInNewContext(js,{module:testModule,exports:testModule.exports,require:n=>{if(n in dependencies)return dependencies[n];throw Error('Unmocked module '+n);},console,Response,Request,URL,Date,crypto,AbortSignal});return testModule.exports;}
+function moduleAt(path,dependencies={}){const testModule={exports:{}};const js=ts.transpileModule(readFileSync(new URL('../'+path,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;vm.runInNewContext(js,{module:testModule,exports:testModule.exports,require:n=>{if(n in dependencies)return dependencies[n];throw Error('Unmocked module '+n);},console,Response,Request,Headers,URL,Date,crypto,AbortSignal,TextEncoder,TextDecoder,atob,btoa});return testModule.exports;}
 const engine=moduleAt('lib/exam-engine.ts');
 const quality=moduleAt('lib/question-quality.ts');
 const expansion=moduleAt('data/expansion.ts',{'../lib/exam-engine':engine});
@@ -24,7 +24,8 @@ test('anonymous workflow persists drafts, isolates devices, rejects stale writes
  const sqlite=new DatabaseSync(':memory:');sqlite.exec(readFileSync(new URL('../drizzle/0000_premium_fallen_one.sql',import.meta.url),'utf8'));
  const DB={prepare(sql){return{bind(...args){const statement=sqlite.prepare(sql);return{async run(){const result=statement.run(...args);return{meta:{changes:Number(result.changes)}};},async first(){return statement.get(...args)||null;},async all(){return{results:statement.all(...args)};}};}};}};
  const store=moduleAt('lib/attempt-store.ts',{'cloudflare:workers':{env:{DB}},'./exam-engine':engine});let user={email:'alice@example.test',displayName:'Alice'};
- const route=moduleAt('app/api/study/route.ts',{'@/app/chatgpt-auth':{getChatGPTUser:async()=>user},'@/lib/attempt-store':store,'@/lib/exam-engine':engine,'@/lib/question-bank':{loadQuestionBank:async()=>bank}});
+ const session=moduleAt('lib/anonymous-session.ts',{'cloudflare:workers':{env:{ANONYMOUS_COOKIE_SECRET:'test-secret'}}});
+ const route=moduleAt('app/api/study/route.ts',{'@/app/chatgpt-auth':{getChatGPTUser:async()=>user},'@/lib/anonymous-session':session,'@/lib/attempt-store':store,'@/lib/exam-engine':engine,'@/lib/question-bank':{loadQuestionBank:async()=>bank}});
  const request=body=>new Request('https://example.test/api/study',{method:'POST',headers:{origin:'https://example.test','content-type':'application/json'},body:JSON.stringify(body)});
  let response=await route.POST(request({action:'start',role:'ti'}));assert.equal(response.status,200);let a=(await response.json()).attempt;assert.equal(a.questions.length,40);assert.equal(a.deadline-a.created,14400000);assert.equal(a.questions[0].answer,undefined);assert.equal(a.questions[0].explanation,undefined);
  const id=a.id;const qid=a.questions[0].id;response=await route.POST(request({action:'save',id,revision:0,answers:{[qid]:2},marked:[qid],essay:''}));assert.equal(response.status,200);a=(await response.json()).attempt;assert.equal(a.revision,1);
@@ -36,6 +37,7 @@ test('anonymous workflow persists drafts, isolates devices, rejects stale writes
  user={email:'alice@example.test',displayName:'Alice'};sqlite.prepare('UPDATE exam_attempts SET deadline=? WHERE id=?').run(Date.now()-1,id);
  response=await route.POST(request({action:'save',id,revision:1,answers:{[qid]:0},marked:[],essay:''}));a=(await response.json()).attempt;assert.equal(a.status,'completed');assert.equal(a.answers[qid],2);assert.ok(Number.isInteger(a.questions[0].answer));assert.equal(a.result.total,40);
  snapshot=await (await route.GET(new Request('https://example.test/api/study'))).json();assert.equal(snapshot.active,null);assert.equal(snapshot.history.length,1);
- user=null;response=await route.POST(request({action:'start',role:'ti'}));assert.equal(response.status,200);
+ user=null;response=await route.POST(request({action:'start',role:'ti'}));assert.equal(response.status,200);const anonCookie=response.headers.get('set-cookie');assert.match(anonCookie,/aprova-anonymous-id=.*; Max-Age=/);assert.match(anonCookie,/HttpOnly/);assert.match(anonCookie,/Secure/);assert.match(anonCookie,/SameSite=Lax/);const anonymousAttempt=(await response.json()).attempt;
+ const anonCookieValue=anonCookie.split(';')[0];response=await route.GET(new Request('https://example.test/api/study',{headers:{cookie:anonCookieValue}}));assert.equal((await response.json()).active.id,anonymousAttempt.id);const tampered=anonCookieValue.slice(0,-1)+'x';response=await route.GET(new Request('https://example.test/api/study',{headers:{cookie:tampered}}));assert.equal(response.status,200);assert.match(response.headers.get('set-cookie'),/aprova-anonymous-id=/);
  response=await route.POST(new Request('https://example.test/api/study',{method:'POST',headers:{origin:'https://evil.test'},body:'{}'}));assert.equal(response.status,403);sqlite.close();
 });
