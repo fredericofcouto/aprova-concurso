@@ -32,13 +32,18 @@ O sistema contempla os cinco cargos solicitados:
 ### Banco de questões
 
 - Banco revisado e isolado no Supabase.
-- 644 itens persistidos, organizados em 524 famílias semânticas.
+- 1.000 questões efetivas: 644 itens revisados no banco principal e 356 itens autorais de expansão.
+- 524 famílias semânticas no banco revisado, somadas a famílias próprias da expansão autoral.
 - Questões comuns para os níveis médio/técnico e superior.
 - Questões específicas para os cinco cargos.
+- Estoque adicional equilibrado entre Português, Raciocínio Lógico, Goiás/São Miguel do Araguaia e Conhecimentos Específicos.
+- Expansão autoral distribuída entre as cinco trilhas: 72 itens para Informática e 71 para cada outro cargo.
 - Priorização de famílias ainda não utilizadas pelo candidato.
 - Bloqueio de duplicidade da mesma família dentro do caderno.
 - Histórico de reutilização quando o estoque inédito de uma disciplina se esgota.
 - Referência do item do edital associada a cada questão.
+- Revisão estrutural automática antes do uso: identifica IDs duplicados, gabarito fora de A–D, alternativas vazias/repetidas, campos obrigatórios ausentes e metadados inválidos.
+- Relatório de avisos editoriais para itens sem vínculo explícito ao subitem do edital ou com comentário curto, sem descartar variantes válidas de uma mesma família.
 
 ### Progresso individual
 
@@ -58,6 +63,13 @@ O sistema contempla os cinco cargos solicitados:
 - Folha digital com linhas para escrita.
 - Rubrica baseada em modalidade escrita, gênero textual, coesão/coerência e desenvolvimento do tema.
 - Sem promessa de correção automática ou nota oficial.
+
+### Acessibilidade
+
+- Link para saltar diretamente ao conteúdo principal.
+- Foco visível e navegação por teclado em botões, links, alternativas e cartão-resposta.
+- Controles persistentes de texto maior e alto contraste, também disponíveis pelos atalhos `Alt + Shift + L` e `Alt + Shift + C`.
+- Suporte a `prefers-contrast` e `prefers-reduced-motion`, além de layout responsivo para telas pequenas.
 
 ## Fidelidade ao edital
 
@@ -99,7 +111,7 @@ Next.js/Vinext + React
 - `supabase/migrations/`: estrutura e políticas do banco de questões revisado.
 - `tests/`: testes do motor, banco, API, renderização e componentes.
 
-## Segurança, privacidade e controle de acesso
+## Segurança e privacidade
 
 - Tentativas e redações ficam vinculadas ao e-mail identificado pelo servidor.
 - Usuários não conseguem consultar tentativas de outras contas.
@@ -192,7 +204,7 @@ O projeto é hospedado pelo Sites e utiliza a configuração declarada em `.open
 ## Limitações importantes
 
 - O site não prevê as perguntas reais da prova.
-- A semelhança com o estilo do Instituto Verbena é de formato e abordagem de treinamento, não de identidade ou vínculo institucional.
+- A semelhança com o estilo do Instituto Verbena é de formato, contextualização e abordagem de treinamento, não de identidade ou vínculo institucional.
 - A dificuldade das questões é didática e não foi calibrada oficialmente pela banca.
 - A redação precisa ser revisada por um professor ou avaliador humano para uma estimativa mais confiável.
 - O banco finito prioriza questões inéditas; não existe geração ilimitada sem repetição.
@@ -200,4 +212,3 @@ O projeto é hospedado pelo Sites e utiliza a configuração declarada em `.open
 ## Licença
 
 Uso educacional. A definição da licença de distribuição do código e do banco de questões deve ser confirmada antes de uma publicação aberta ou reutilização comercial.
-

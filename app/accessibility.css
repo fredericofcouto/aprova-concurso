@@ -1,0 +1,118 @@
+/* Camada transversal de acessibilidade, sem alterar a composição do edital. */
+:focus-visible {
+  outline: 3px solid #d95f47;
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 12px;
+  top: 10px;
+  z-index: 50;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #173c35;
+  color: #fff;
+  transform: translateY(-150%);
+  transition: transform .15s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.accessibility-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  color: #71807b;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.accessibility-tools button {
+  border: 1px solid #cbdad2;
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: #fff;
+  color: #315d50;
+  cursor: pointer;
+}
+
+.accessibility-tools button:hover,
+.accessibility-tools button[aria-pressed="true"] {
+  background: #e4f1ec;
+  border-color: #6b9e8b;
+}
+
+html.font-large {
+  font-size: 112.5%;
+}
+
+html.font-large body {
+  line-height: 1.5;
+}
+
+html.high-contrast {
+  --ink: #071f1c;
+  --muted: #263d38;
+  --line: #6b7d77;
+  --paper: #fff;
+  --accent: #075c4d;
+  --coral: #b93822;
+}
+
+html.high-contrast body,
+html.high-contrast .app-shell {
+  background: #fff;
+  color: #071f1c;
+}
+
+html.high-contrast a,
+html.high-contrast .text-button,
+html.high-contrast .quiet-button,
+html.high-contrast .back-link {
+  color: #075c4d;
+  text-decoration-thickness: 2px;
+}
+
+html.high-contrast .panel,
+html.high-contrast .role-card,
+html.high-contrast .hero-card,
+html.high-contrast .aside-card,
+html.high-contrast .review-list,
+html.high-contrast .option,
+html.high-contrast .secondary-button {
+  border-color: #6b7d77;
+}
+
+html.high-contrast .option:hover,
+html.high-contrast .option.chosen,
+html.high-contrast .nav-link:hover,
+html.high-contrast .nav-link.active,
+html.high-contrast .side-role:hover,
+html.high-contrast .side-role.active {
+  background: #e4f1ec;
+}
+
+@media (prefers-contrast: more) {
+  :root { --ink: #071f1c; --line: #526761; --accent: #075c4d; }
+  a, button { text-decoration-thickness: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .skip-link { left: 8px; top: 8px; }
+  html.font-large { font-size: 106.25%; }
+  .accessibility-tools { width: 100%; margin-left: 0; justify-content: flex-end; order: 4; }
+  .accessibility-tools span { margin-right: auto; }
+}

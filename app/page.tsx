@@ -25,7 +25,7 @@ type Catalog = {
 const key = (id: string) => `aprova-draft-${id}`;
 type StudyData = { user: { name: string } | null; history: AttemptSummary[]; active: Attempt | null; attempt: Attempt; questions: PublicQuestion[]; serverNow: number };
 class ApiError extends Error { constructor(message: string, public status: number) { super(message); } }
-async function api<T = StudyData>(path: string, body?: unknown) { const r = await fetch(path, { method: body ? "POST" : "GET", headers: body ? { "Content-Type": "application/json" } : undefined, body: body ? JSON.stringify(body) : undefined, cache: "no-store" }); const data = await r.json() as T & { error?: string; serverNow: number }; if (!r.ok)
+async function api<T = StudyData>(path: string, body?: unknown) { const anon = typeof window !== "undefined" ? (localStorage.getItem("aprova-anonymous-id") || (() => { const id = crypto.randomUUID(); localStorage.setItem("aprova-anonymous-id", id); return id; })()) : ""; const r = await fetch(path, { method: body ? "POST" : "GET", headers: { ...(body ? { "Content-Type": "application/json" } : {}), "x-aprova-anonymous-id": anon }, body: body ? JSON.stringify(body) : undefined, cache: "no-store" }); const data = await r.json() as T & { error?: string; serverNow: number }; if (!r.ok)
     throw new ApiError(data.error || "Falha de conexão. Tente novamente.", r.status); return { ...data, clientNow: Date.now() }; }
 const date = (n: number) => new Date(n).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" });
 function duration(ms: number) { const s = Math.max(0, Math.floor(ms / 1000)); return [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(n => String(n).padStart(2, "0")).join(":"); }
@@ -34,6 +34,7 @@ export default function Home() {
         name: string;
     } | null>(null), [attempt, setAttempt] = useState<Attempt | null>(null), [history, setHistory] = useState<AttemptSummary[]>([]), [catalog, setCatalog] = useState<Catalog | null>(null);
     const [loading, setLoading] = useState(true), [busy, setBusy] = useState(false), [message, setMessage] = useState(""), [saveStatus, setSaveStatus] = useState(""), [now, setNow] = useState(0), [offset, setOffset] = useState(0), [confirm, setConfirm] = useState(false), [onlyWrong, setOnlyWrong] = useState(false), [errorQuestions, setErrorQuestions] = useState<PublicQuestion[]>([]);
+    const [largeText, setLargeText] = useState(false), [highContrast, setHighContrast] = useState(false);
     const current = useRef<Attempt | null>(null), pending = useRef(false), saving = useRef(false), finishing = useRef(false), conflicted = useRef(false), saveDelay = useRef<number | undefined>(undefined), savePromise = useRef<Promise<void>>(Promise.resolve());
     function adopt(a: Attempt) { current.current = a; setAttempt(a); setRole(a.role); }
     async function reload() { const d = await api("/api/study"); setUser(d.user); setHistory(d.history || []); if (d.serverNow)
@@ -65,6 +66,30 @@ export default function Home() {
         const t = window.setInterval(() => setNow(Date.now()), 1000);
         return () => window.clearInterval(t);
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            setLargeText(localStorage.getItem("aprova-large-text") === "true");
+            setHighContrast(localStorage.getItem("aprova-high-contrast") === "true");
+        }, 0);
+        return () => window.clearTimeout(timer);
+    }, []);
+    useEffect(() => {
+        document.documentElement.classList.toggle("font-large", largeText);
+        localStorage.setItem("aprova-large-text", String(largeText));
+    }, [largeText]);
+    useEffect(() => {
+        document.documentElement.classList.toggle("high-contrast", highContrast);
+        localStorage.setItem("aprova-high-contrast", String(highContrast));
+    }, [highContrast]);
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (!event.altKey || !event.shiftKey) return;
+            if (event.key.toLowerCase() === "l") { event.preventDefault(); setLargeText(value => !value); }
+            if (event.key.toLowerCase() === "c") { event.preventDefault(); setHighContrast(value => !value); }
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
     }, []);
     function cache(a: Attempt) { try {
         sessionStorage.setItem(key(a.id), JSON.stringify({ revision: a.revision, draft: { answers: a.answers, marked: a.marked, essay: a.essay } }));
@@ -121,10 +146,7 @@ export default function Home() {
     }, []);
     useEffect(() => { if (attempt?.status !== "active" || !now || now + offset < attempt.deadline || finishing.current)
         return; finishing.current = true; setBusy(true); api(`/api/study?id=${attempt.id}`).then(d => { adopt(d.attempt); setView("result"); setMessage("O tempo terminou. O resultado considera as respostas recebidas antes do prazo."); }).catch(e => setMessage(e.message)).finally(() => { finishing.current = false; setBusy(false); }); }, [now, offset, attempt?.deadline, attempt?.id, attempt?.status]);
-    async function start(id: RoleId) { if (!user) {
-        window.open('/signin-with-chatgpt?return_to=' + encodeURIComponent('/?trilha=' + id), '_top');
-        return;
-    } if (current.current?.status === "active") {
+    async function start(id: RoleId) { if (current.current?.status === "active") {
         setView("exam");
         setMessage("Sua prova em andamento foi retomada. Finalize-a antes de iniciar outra trilha.");
         return;
@@ -196,7 +218,8 @@ export default function Home() {
     return <div className="app-shell"><a className="skip-link" href="#main">Pular para o conteúdo</a><header className="topbar"><button className="brand" onClick={() => go("home")}><span className="brand-mark"><GraduationCap size={20}/></span>Aprova<span className="brand-dot">.</span></button><nav className="topnav" aria-label="Navegação principal">{([["home", "Painel"], ["study", "O que estudar"], ["history", "Histórico"]] as [
         View,
         string
-    ][]).map(([v, label]) => <button key={v} className={`nav-link ${view === v ? 'active' : ''}`} onClick={() => go(v)}>{label}</button>)}<button className="nav-link" onClick={() => go(active ? "exam" : "home")}>{active ? "Retomar prova" : "Simulados"}</button></nav><div className="account">{user ? <><span title={user.name}>{user.name}</span><a href="/signout-with-chatgpt?return_to=%2F" target="_top">Trocar conta</a></> : <a className="sign-in" href="/signin-with-chatgpt?return_to=%2F" target="_top">Entrar com ChatGPT</a>}</div></header>
+    ][]).map(([v, label]) => <button key={v} className={`nav-link ${view === v ? 'active' : ''}`} onClick={() => go(v)}>{label}</button>)}<button className="nav-link" onClick={() => go(active ? "exam" : "home")}>{active ? "Retomar prova" : "Simulados"}</button></nav><div className="account">{user ? <><span title={user.name}>{user.name}</span><a href="/signout-with-chatgpt?return_to=%2F" target="_top">Trocar conta</a></> : <a className="sign-in" href="/signin-with-chatgpt?return_to=%2F" target="_top">Entrar com ChatGPT</a>}</div>
+<div className="accessibility-tools" role="group" aria-label="Ferramentas de acessibilidade"><span>Acessibilidade</span><button type="button" onClick={() => setLargeText(value => !value)} aria-pressed={largeText} title="Atalho: Alt + Shift + L">Texto {largeText ? "normal" : "maior"}</button><button type="button" onClick={() => setHighContrast(value => !value)} aria-pressed={highContrast} title="Atalho: Alt + Shift + C">Contraste</button></div></header>
  <main id="main">{message && <div className="notice section-wrap" role="alert"><span>{message}</span><button aria-label="Fechar aviso" onClick={() => setMessage("")}>×</button></div>}{loading ? <div className="loading section-wrap" role="status">Carregando seu espaço de estudos…</div> : <>
  {view === "home" && <div className="section-wrap home-workspace"><div className="workspace-heading"><div><p className="eyebrow">SÃO MIGUEL DO ARAGUAIA · INSTITUTO VERBENA/UFG</p><h1>Sua próxima prova<br /><em>começa aqui.</em></h1><p>Escolha o cargo. Resolva o caderno completo. Revise seus erros.</p></div><aside className="hero-card" aria-label="Seu painel"><div className="hero-card-top"><span className="mini-label">SEU PAINEL</span><span className="live-pill"><span />{user ? "individual" : "entre para salvar"}</span></div><div className="hero-score"><span className="score-label">Última prova concluída</span><strong>{last ? last.points : "—"}<small>{last ? " / 100" : ""}</small></strong><span className="score-caption">{last ? roles[last.role].name : "Seu primeiro resultado aparecerá aqui"}</span></div><Progress value={last?.points || 0} aria-label="Pontuação da última prova"/><div className="hero-card-footer"><span>{history.length} provas no histórico</span><span>Prova: 29 nov. 2026</span></div></aside></div>
  <div className="date-notice"><Clock3 size={17}/><span>Data atualizada: <strong>29/11/2026</strong> · Edital Complementar nº 02/2026. <a href={officialUrl} target="_blank" rel="noreferrer">Conferir na banca ↗</a></span></div>

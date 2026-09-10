@@ -3,11 +3,13 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {readBank,readModule} from '../scripts/read-curated-bank.mjs';
 const bank=readBank();const {roleIds,blueprint,eligible,buildExam,grade}=readModule('lib/exam-engine.ts');
+const quality=readModule('lib/question-quality.ts');const expansion=readModule('data/expansion.ts').expansionQuestions;
 const syllabus=JSON.parse(readFileSync(new URL('../lib/syllabus.json',import.meta.url),'utf8'));
 test('curated bank has valid unique IDs, four distinct options, answer keys and syllabus references',()=>{
  assert.equal(new Set(bank.map(q=>q.id)).size,bank.length);
  for(const q of bank){assert.equal(q.options.length,4,q.id);assert.equal(new Set(q.options.map(s=>s.trim().toLowerCase())).size,4,q.id);assert.ok(q.answer>=0&&q.answer<4,q.id);assert.ok(q.prompt&&q.explanation&&q.source,q.id);const items=q.role==='common'?syllabus.common[q.level][q.subject]:syllabus.specific[q.role];assert.ok(items[Number(q.syllabusItem)-1],q.id);}
 });
+test('effective 1000-question bank passes the same quality gate used in production',()=>{const report=quality.reviewBank([...bank,...expansion]);assert.equal(report.rejected.length,0);assert.equal(report.questions.length,1000);assert.equal(report.warnings.length,0);});
 test('actual published bank supports two disjoint complete attempts per role and section',()=>{
  for(const role of roleIds){const history=[];for(let run=0;run<2;run++){const result=buildExam(bank,role,history);assert.equal(result.repeated,0,role);history.push(...result.questions.map(q=>q.family));}}
 });
